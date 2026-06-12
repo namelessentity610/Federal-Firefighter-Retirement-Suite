@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federal Firefighter Retirement Suite</title>
+<style>
+:root {
+  --ink: #1c1917;
+  --ink2: #44403c;
+  --mute: #78716c;
+  --line: #e7e5e4;
+  --paper: #faf9f7;
+  --page: #f0ece7;
+  --ember: #b23a1e;
+  --ember2: #ea580c;
+  --ember-light: #fdf3ee;
+  --ember-mid: #fed7aa;
+  --gold: #b45309;
+  --gold-light: #fef3c7;
+  --teal: #0f6e56;
+  --teal-light: #e1f5ee;
+  --blue: #185fa5;
+  --blue-light: #e6f1fb;
+  --good: #15803d;
+  --good-light: #eaf3de;
+  --bad: #a32d2d;
+  --bad-light: #fcebeb;
+  --nav-h: 58px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--page);color:var(--ink);line-height:1.55;font-size:15px}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:#1e1410;border-bottom:1px solid #3a2820;
+  display:flex;align-items:center;height:var(--nav-h);padding:0 20px;gap:0}
+.nav-brand{display:flex;align-items:center;gap:10px;margin-right:24px;flex-shrink:0}
+.nav-flame{width:4px;height:28px;border-radius:4px;background:linear-gradient(180deg,#f59e0b,#b23a1e)}
+.nav-title{font-family:Georgia,serif;font-size:15px;font-weight:700;color:#fff;line-height:1.2}
+.nav-title span{display:block;font-size:11px;font-weight:400;color:#a8998f;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex-shrink:0;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:#a8998f;
+  cursor:pointer;border:none;background:none;font-family:inherit;white-space:nowrap;transition:color .15s,background .15s}
+.nav-tab:hover{color:#f5f0eb;background:rgba(255,255,255,.07)}
+.nav-tab.active{color:#fff;background:rgba(255,255,255,.13)}
+.nav-tab .tnum{display:inline-block;width:18px;height:18px;border-radius:50%;
+  background:var(--ember);color:#fff;font-size:10px;text-align:center;line-height:18px;
+  margin-right:5px;font-weight:700}
+.nav-tab.active .tnum{background:#fff;color:#b23a1e}
+.print-btn{flex-shrink:0;margin-left:12px;padding:8px 14px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#f5f0eb;
+  font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;
+  transition:background .15s}
+.print-btn:hover{background:rgba(255,255,255,.18)}
+
+/* ── SUBBAR ── */
+.subbar{background:var(--ember-light);border-bottom:1px solid var(--ember-mid);
+  padding:8px 20px;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:6px;font-size:12px;color:#7c2d12}
+.subbar-stamp{color:var(--mute);font-size:11px;white-space:nowrap}
+
+/* ── LAYOUT ── */
+.pages{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+.page{display:none}
+.page.active{display:block}
+
+/* ── SECTION STRUCTURE ── */
+.sect{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px}
+.sect-title{font-family:Georgia,serif;font-size:15px;font-weight:700;color:var(--ink);
+  margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--ember);display:inline-block}
+.page-head{margin-bottom:20px}
+.page-head h2{font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--ink)}
+.page-head p{font-size:13px;color:var(--mute);margin-top:4px;max-width:640px}
+
+/* ── HOW-TO STEPS ── */
+.howto-grid{display:grid;gap:10px;margin-top:14px}
+.howto-step{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;
+  padding:10px 0;border-top:1px solid var(--line)}
+.howto-step:first-child{border-top:none;padding-top:14px}
+.howto-step b{color:var(--ink)}
+.howto-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;
+  border-radius:50%;background:var(--ember);color:#fff;font-weight:700;font-size:13px;
+  font-family:ui-monospace,monospace}
+.howto-step div:last-child{font-size:13.5px;color:var(--ink2);padding-top:3px}
+
+/* ── FORM ELEMENTS ── */
+label.lab{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);margin-bottom:6px;display:block}
+select,input[type=number]{width:100%;padding:9px 11px;border:1px solid #d6d3d1;border-radius:9px;
+  font-size:15px;background:#fff;color:var(--ink);font-family:inherit;outline:none;transition:border .15s,box-shadow .15s}
+select:focus,input:focus{border-color:var(--ember2);box-shadow:0 0 0 3px rgba(234,88,12,.14)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(max-width:740px){.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
+
+/* ── SEGMENTED CONTROL ── */
+.seg{display:flex;border:1px solid #d6d3d1;border-radius:9px;overflow:hidden;background:#fff}
+.seg button{flex:1;padding:9px 4px;border:none;background:#fff;font-size:14px;font-weight:600;
+  color:var(--mute);cursor:pointer;font-family:inherit;transition:background .12s,color .12s}
+.seg button.on{background:var(--ember);color:#fff}
+.seg input{width:70px;border:none;border-left:1px solid #d6d3d1;text-align:center;
+  border-radius:0;font-size:14px;padding:9px 4px}
+.seg input:focus{box-shadow:none;outline:none}
+
+/* ── OUTPUT CARDS ── */
+.out-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:600px){.out-grid{grid-template-columns:1fr}}
+.ocard{border:1px solid var(--line);border-radius:13px;padding:16px 18px;background:#fff}
+.ocard.primary{border:2px solid var(--ember);background:linear-gradient(160deg,#fff,#fdf3ee)}
+.ocard.teal{border:2px solid var(--teal);background:linear-gradient(160deg,#fff,var(--teal-light))}
+.ocard.blue{border:2px solid var(--blue);background:linear-gradient(160deg,#fff,var(--blue-light))}
+.ocard.gold{border:2px solid var(--gold);background:linear-gradient(160deg,#fff,var(--gold-light))}
+.ocard h3{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.ocard.primary h3{color:var(--ember)}
+.ocard.teal h3{color:var(--teal)}
+.ocard.blue h3{color:var(--blue)}
+.ocard.gold h3{color:var(--gold)}
+.ocard .big{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:26px;
+  margin-top:5px;color:#7c2d12}
+.ocard.teal .big{color:var(--teal)}
+.ocard.blue .big{color:var(--blue)}
+.ocard.gold .big{color:var(--gold)}
+.ocard .sub{font-size:12px;color:var(--mute);margin-top:3px}
+.ocard .detail{font-size:13px;margin-top:8px;color:var(--ink2)}
+
+/* ── RESULT TILES ── */
+.tile-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.tile{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:#fff}
+.tile h4{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tile .v{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:20px;
+  margin-top:4px;color:var(--ink)}
+.tile .vs{font-size:11px;color:var(--mute);margin-top:2px}
+.tile.em{background:var(--ember);border-color:var(--ember)}
+.tile.em h4{color:rgba(255,255,255,.75)}
+.tile.em .v{color:#fff}
+.tile.em .vs{color:rgba(255,255,255,.7)}
+.tile.dk{background:#1e1410;border-color:#1e1410}
+.tile.dk h4{color:#a8998f}
+.tile.dk .v,.tile.dk .vs{color:#fff}
+
+/* ── BREAKDOWN TABLE ── */
+details.brk{margin-top:14px;border:1px solid var(--line);border-radius:11px;background:#fff;overflow:hidden}
+summary.brk-sum{padding:12px 16px;cursor:pointer;font-weight:600;font-size:13.5px;
+  color:var(--ember);list-style:none;display:flex;align-items:center;gap:6px}
+summary.brk-sum::-webkit-details-marker{display:none}
+summary.brk-sum::before{content:"▸";color:var(--ember)}
+details[open]>summary.brk-sum::before{content:"▾"}
+table.bt{width:100%;border-collapse:collapse;font-size:13.5px}
+table.bt td{padding:9px 16px;border-top:1px solid var(--line)}
+table.bt td:last-child{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}
+tr.bt-hl td{background:var(--ember-light);font-weight:700;color:#7c2d12}
+.rowlab{color:var(--mute)}
+
+/* ── COMPARE TABLE ── */
+.cmp-bar{border-radius:11px;overflow:hidden;border:1px solid var(--line);margin-top:14px}
+.cmp-row{display:grid;font-size:13px}
+.cmp-row>div{padding:10px 13px;border-top:1px solid var(--line)}
+.cmp-row.hd>div{background:#1e1410;color:#fff;border-top:none;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.cmp-row .num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}
+.win{color:var(--good);font-weight:700}
+.lose{color:var(--bad)}
+
+/* ── CALLOUT ── */
+.callout{background:var(--ember-light);border-left:3px solid var(--ember);
+  border-radius:0 8px 8px 0;padding:11px 14px;margin:12px 0;font-size:13.5px}
+.callout.teal{background:var(--teal-light);border-left-color:var(--teal)}
+.callout.blue{background:var(--blue-light);border-left-color:var(--blue)}
+.callout.gold{background:var(--gold-light);border-left-color:var(--gold)}
+.callout b{color:var(--ember)}
+.callout.teal b{color:var(--teal)}
+.callout.blue b{color:var(--blue)}
+.callout.gold b{color:var(--gold)}
+.note{font-size:12px;color:var(--mute);margin-top:10px;line-height:1.6}
+
+/* ── ACCORDION REFERENCE ── */
+.ref details{border:1px solid var(--line);border-radius:12px;background:#fff;
+  margin-bottom:10px;overflow:hidden;border-left:4px solid var(--ember)}
+.ref.teal-ref details{border-left-color:var(--teal)}
+.ref.blue-ref details{border-left-color:var(--blue)}
+.ref summary{padding:14px 18px;font-family:Georgia,serif;font-size:15px;
+  font-weight:700;color:var(--ink);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px}
+.ref summary::-webkit-details-marker{display:none}
+.ref summary::before{content:"▸";color:var(--ember);font-family:ui-sans-serif,sans-serif}
+.ref.teal-ref summary::before{color:var(--teal)}
+.ref.blue-ref summary::before{color:var(--blue)}
+.ref details[open]>summary::before{content:"▾"}
+.ref .body{padding:0 18px 18px;font-size:13.5px;color:#3a3530}
+.ref .body p{margin:0 0 9px}
+.ref .body ul{margin:0 0 9px 18px}
+.ref .body li{margin-bottom:5px}
+.ref .body b{color:var(--ink)}
+.pill{display:inline-block;background:#f5f5f4;border:1px solid var(--line);border-radius:5px;
+  padding:1px 6px;font-family:ui-monospace,monospace;font-size:12px;color:#57534e}
+.ctab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.ctab td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+.ctab td:first-child{font-family:ui-monospace,monospace;white-space:nowrap;color:#7c2d12;font-size:12px}
+
+/* ── TOTAL PICTURE ── */
+.stack-bar{height:32px;border-radius:8px;overflow:hidden;display:flex;margin:10px 0}
+.stack-seg{display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;overflow:hidden;white-space:nowrap;padding:0 6px;transition:width .4s}
+.income-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.income-row:first-child{border-top:none}
+.income-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.income-label{flex:1;color:var(--ink2)}
+.income-val{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:14px}
+.divider-row{padding:8px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;
+  font-size:13.5px;font-weight:700;color:var(--ink)}
+
+/* ── CHART WRAPPER ── */
+.chart-wrap{position:relative;width:100%;height:260px;margin-top:14px}
+.chart-legend{display:flex;gap:18px;margin-top:12px;font-size:12px;color:var(--mute);flex-wrap:wrap}
+.chart-legend-line{display:inline-block;width:18px;height:3px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.chart-legend-line.dash{background:repeating-linear-gradient(to right,currentColor 0 6px,transparent 6px 10px);border-radius:0}
+.chart-legend-line.dot{background:repeating-linear-gradient(to right,currentColor 0 3px,transparent 3px 6px);border-radius:0}
+
+/* ── HIGH 3 SPECIFIC ── */
+.yr-inputs{display:grid;gap:10px;max-width:420px}
+.yr-row{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center}
+.yr-label{font-size:13px;color:var(--mute);font-weight:600}
+@media(max-width:500px){.yr-row{grid-template-columns:60px 1fr}}
+
+/* ── TSP SPECIFIC ── */
+.range-wrap{display:flex;align-items:center;gap:10px}
+.range-wrap input[type=range]{flex:1;accent-color:var(--ember)}
+.range-out{font-family:ui-monospace,monospace;font-size:14px;font-weight:700;
+  min-width:44px;text-align:right;color:var(--ink)}
+
+/* ── TOTAL PICTURE ── */
+.picture-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:16px}
+@media(max-width:640px){.picture-grid{grid-template-columns:1fr}}
+
+/* ── BADGE ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase}
+.badge.ember{background:var(--ember-light);color:var(--ember)}
+.badge.teal{background:var(--teal-light);color:var(--teal)}
+.badge.blue{background:var(--blue-light);color:var(--blue)}
+.badge.gold{background:var(--gold-light);color:var(--gold)}
+
+/* ── FOOTER ── */
+.foot{font-size:11px;color:var(--mute);margin-top:18px;line-height:1.65;
+  background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:14px 18px}
+
+/* ── PRINT STYLESHEET ── */
+@media print{
+  .nav, .subbar{display:none}
+  body{background:#fff;font-size:12px}
+  .pages{max-width:none;padding:0}
+  .page{display:block !important;page-break-after:always}
+  .page:last-child{page-break-after:auto}
+  .sect{border:1px solid #ccc;break-inside:avoid;box-shadow:none}
+  details{break-inside:avoid}
+  details:not([open]) summary ~ *{display:block !important}
+  details > summary::before{display:none}
+  .ocard, .tile, .callout{break-inside:avoid}
+  .chart-wrap{break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-flame"></div>
+    <div class="nav-title">FF Retirement Suite<span>Federal · 0081 Special Provisions</span></div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('pay',this)"><span class="tnum">1</span>Pay</button>
+    <button class="nav-tab" onclick="showPage('high3',this)"><span class="tnum">2</span>High-3</button>
+    <button class="nav-tab" onclick="showPage('tsp',this)"><span class="tnum">3</span>TSP</button>
+    <button class="nav-tab" onclick="showPage('ss',this)"><span class="tnum">4</span>Social Security</button>
+    <button class="nav-tab" onclick="showPage('picture',this)"><span class="tnum">5</span>Total Picture</button>
+    <button class="nav-tab" onclick="showPage('ref',this)"><span class="tnum">?</span>Reference</button>
+  </div>
+  <button class="print-btn" onclick="window.print()" aria-label="Print or save as PDF">Print / Save PDF</button>
+</nav>
+
+<div class="subbar">
+  <span>Planning estimates only — not an official pay or benefits determination. Confirm all figures with agency HR.</span>
+  <span class="subbar-stamp">Pay tables: 2026 &nbsp;·&nbsp; Tax brackets: 2025&ndash;2026</span>
+</div>
+
+<div class="pages">
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1 · PAY CALCULATOR
+══════════════════════════════════════════════ -->
+<div class="page active" id="page-pay">
+  <div class="page-head">
+    <h2>Pay Calculator</h2>
+    <p>Your gross pay, FF Base Pay (the pension / High-3 basis), and full biweekly breakdown. Results carry forward into the other modules.</p>
+  </div>
+
+  <div class="sect" style="background:#fff">
+    <details>
+      <summary class="brk-sum" style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:var(--ink);padding:0 0 10px;border-bottom:2px solid var(--ember);display:inline-block">How to use this suite</summary>
+      <div style="padding-top:14px">
+        <p style="font-size:13.5px;color:var(--ink2)">This suite has five steps, in order. Each step builds on the one before it, so values you enter here carry forward automatically.</p>
+        <div class="howto-grid">
+          <div class="howto-step"><span class="howto-num">1</span><div><b>Pay</b> — enter your locality, schedule, grade, and step to calculate your gross pay and FF Base Pay.</div></div>
+          <div class="howto-step"><span class="howto-num">2</span><div><b>High-3</b> — enter your three highest consecutive years of FF Base Pay to estimate your FERS annuity.</div></div>
+          <div class="howto-step"><span class="howto-num">3</span><div><b>TSP</b> — project your Thrift Savings Plan balance and a sustainable monthly withdrawal.</div></div>
+          <div class="howto-step"><span class="howto-num">4</span><div><b>Social Security</b> — estimate your Special Retirement Supplement and compare Social Security claiming ages.</div></div>
+          <div class="howto-step"><span class="howto-num">5</span><div><b>Total Picture</b> — combines everything into a single net monthly income view, before and after age 62.</div></div>
+        </div>
+        <p style="font-size:12px;color:var(--mute);margin-top:10px">A <b>Reference</b> tab at the end covers the statutes and rules behind every calculation, including a glossary of terms.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Your pay inputs</div>
+    <div style="margin-bottom:14px">
+      <label class="lab">Locality / COLA Area</label>
+      <select id="locA"></select>
+    </div>
+    <div class="g3">
+      <div>
+        <label class="lab">Schedule (hrs/week)</label>
+        <div class="seg" id="hseg">
+          <button data-h="56" class="on">56</button>
+          <button data-h="72">72</button>
+          <input type="number" id="hcustom" placeholder="other" min="40" max="84">
+        </div>
+      </div>
+      <div><label class="lab">GS Grade</label><select id="gradeA"></select></div>
+      <div><label class="lab">Step</label><select id="stepA"></select></div>
+    </div>
+    <div class="g3" style="margin-top:14px">
+      <div><label class="lab">Differential hrs / pay period</label><input type="number" id="diffHrs" value="48" min="0"></div>
+      <div><label class="lab">Differential %</label><input type="number" id="diffPct" value="25" min="0"></div>
+      <div><label class="lab">OT threshold (hrs / pay period)</label><input type="number" id="otThresh" value="101" min="80" max="106"></div>
+    </div>
+    <p class="note" style="margin-top:8px">Differential is premium pay — affects gross only, not FF Base Pay or pension. OT threshold shifts hours between straight-time and overtime pay.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Results</div>
+    <div class="out-grid">
+      <div class="ocard primary">
+        <h3>Gross Pay (pre-tax)</h3>
+        <div class="big" id="annualA">$0</div>
+        <div class="sub" id="ppA">$0 / pay period</div>
+        <div class="detail">GS Base (locality-adjusted): <span style="font-family:ui-monospace,monospace;font-weight:700" id="gsA">$0</span></div>
+      </div>
+      <div class="ocard teal">
+        <h3>FF Base Pay — pension / High-3 basis</h3>
+        <div class="big" id="ffbaseA">$0</div>
+        <div class="sub">Credited basic pay for retirement, TSP &amp; FEGLI</div>
+      </div>
+    </div>
+
+    <div class="tile-row" style="margin-top:14px">
+      <div class="tile">
+        <h4>Est. annual agency TSP contribution</h4>
+        <div class="v" id="tspMatchEst">$0</div>
+        <div class="vs">1% automatic + up to 4% match (5% total) of FF Base Pay — see TSP tab</div>
+      </div>
+    </div>
+
+    <details class="brk" style="margin-top:16px">
+      <summary class="brk-sum">Full pay breakdown</summary>
+      <table class="bt" id="brkA">
+        <tr><td class="rowlab">GS Base Pay (annual, locality-adjusted)</td><td data-k="gsAdj"></td></tr>
+        <tr><td class="rowlab">FF Rate (hourly — GS annual ÷ 2,756)</td><td data-k="ffRate"></td></tr>
+        <tr><td class="rowlab">FF Pay — <span id="nonOtLbl">101</span> straight-time hrs (biweekly)</td><td data-k="ffPay"></td></tr>
+        <tr><td class="rowlab">OT Rate (hourly, capped at GS-10/1)</td><td data-k="otRate"></td></tr>
+        <tr><td class="rowlab">OT Pay — <span id="otHlbl">6</span> hrs (biweekly)</td><td data-k="otPay"></td></tr>
+        <tr><td class="rowlab">Differential — <span id="diffLbl">48</span> hrs × <span id="diffPctLbl">25</span>% (biweekly)</td><td data-k="diffPay"></td></tr>
+        <tr><td class="rowlab">COLA (if applicable, biweekly)</td><td data-k="colaPay"></td></tr>
+        <tr><td class="rowlab">Pay Period (biweekly gross)</td><td data-k="pp"></td></tr>
+        <tr><td class="rowlab">Annual Pay (gross)</td><td data-k="annual"></td></tr>
+        <tr class="bt-hl"><td>FF Base Pay (High-3 basis)</td><td data-k="ffBase"></td></tr>
+      </table>
+    </details>
+  </div>
+
+  <div class="foot">
+    Built from the 2026 Federal Firefighter Pay Program. FF Base Pay = FF hourly rate (GS annual ÷ 2,756) × all scheduled tour hours at straight time × 26, per 5 CFR 550.1305. GS-3/GS-4 and some Alaska areas may differ due to special-rate tables. Not an official pay chart — verify with agency HR.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 · HIGH-3 CALCULATOR
+══════════════════════════════════════════════ -->
+<div class="page" id="page-high3">
+  <div class="page-head">
+    <h2>High-3 Calculator</h2>
+    <p>Your pension is based on the average of your three highest consecutive years of FF Base Pay. Enter those three years below — or use the auto-fill from the Pay page.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Your three highest consecutive years</div>
+    <div class="callout teal" style="margin-bottom:14px">
+      <b>What to enter:</b> For each year, enter the total FF Base Pay you received (or expect to receive) — not your gross pay. FF Base Pay is calculated for you on the Pay tab. A 72-hour schedule produces a higher FF Base Pay than a 56-hour schedule at the same grade and step.
+    </div>
+    <div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <button onclick="autoFillHigh3()" style="padding:8px 14px;border-radius:8px;border:1px solid var(--teal);color:var(--teal);background:var(--teal-light);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">↑ Auto-fill from Pay page</button>
+      <span style="font-size:12px;color:var(--mute)">Fills all three years with your current FF Base Pay as a starting point — adjust each year as needed.</span>
+    </div>
+
+    <div id="h3-year-inputs" class="yr-inputs"></div>
+
+    <details style="margin-top:14px">
+      <summary class="brk-sum">Planning ahead? Compare more than 3 years</summary>
+      <div style="padding:12px 16px 4px">
+        <p class="note" style="margin-top:0">If a schedule change, promotion, or other pay shift is coming up, you can add years here to see which 3-consecutive-year window gives the highest average. This is optional — most people only need the three rows above.</p>
+        <button onclick="addH3Year()" style="padding:7px 12px;border-radius:7px;border:1px dashed var(--line);color:var(--mute);background:none;font-size:13px;cursor:pointer;font-family:inherit">+ Add a year</button>
+        <button onclick="removeH3Year()" style="padding:7px 12px;border-radius:7px;border:1px dashed var(--line);color:var(--mute);background:none;font-size:13px;cursor:pointer;font-family:inherit;margin-left:6px">− Remove a year</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">High-3 result</div>
+    <div class="out-grid">
+      <div class="ocard teal">
+        <h3>Your High-3 Average</h3>
+        <div class="big" id="h3-result">$0</div>
+        <div class="sub" id="h3-window">Average of the years entered</div>
+      </div>
+      <div class="ocard primary">
+        <h3>Estimated FERS Annuity</h3>
+        <div class="big" id="h3-annuity">$0/yr</div>
+        <div class="sub" id="h3-annuity-sub">Using years from Retirement page</div>
+        <div class="detail">Monthly: <span style="font-family:ui-monospace,monospace;font-weight:700" id="h3-annuity-mo">$0</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <label class="lab">Years of special-provisions service (for annuity preview)</label>
+      <input type="number" id="h3-yrs" value="23" min="1" max="40" style="max-width:160px">
+    </div>
+
+    <div id="h3-table-wrap" style="margin-top:16px"></div>
+  </div>
+
+  <div class="sect ref teal-ref">
+    <div class="sect-title">How the High-3 works</div>
+    <details>
+      <summary>The 2,756 divisor explained</summary>
+      <div class="body">
+        <p>Your hourly rate is your annual GS salary (including locality) divided by <span class="pill">2,756</span> — a 53-hour week × 52 weeks — not the usual 2,087 used for non-firefighters. This produces a lower hourly rate. That is not a pay cut; it is a different way of expressing the same annual salary across a longer standard workweek.</p>
+        <p>Under <b>5 CFR 550.1305</b>, creditable basic pay is every hour of your regular scheduled tour at that straight-time rate — including hours that technically qualify as "overtime" because they exceed 40/week. Only these are excluded: the half-time premium on FLSA overtime, irregular overtime and call-backs, and Sunday/night/holiday differential pay.</p>
+        <div class="callout teal"><b>Result:</b> Because the hourly rate is derived from a 53-hr week but you are credited for all 56–72 scheduled hours at straight time, your creditable FF Base Pay runs a few percent above the published GS salary.</div>
+      </div>
+    </details>
+    <details>
+      <summary>Why the highest 3 consecutive years matter</summary>
+      <div class="body">
+        <p>High-3 is the average of your three highest <b>consecutive</b> years of creditable basic pay. A shift from a 56-hour to a 72-hour schedule during that window meaningfully raises your High-3 — and therefore your lifetime pension. A promotion to a higher GS grade also raises it. Which years fall in that window is worth planning for.</p>
+        <p>Note that overtime pay itself does not raise your High-3 — only your <i>scheduled tour</i> (56 vs. 72 hours) and your GS grade/step affect FF Base Pay. Use the optional rows above if you want to compare a window that includes an upcoming schedule or grade change.</p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 · TSP CALCULATOR
+══════════════════════════════════════════════ -->
+<div class="page" id="page-tsp">
+  <div class="page-head">
+    <h2>TSP Calculator</h2>
+    <p>Project your Thrift Savings Plan balance at retirement, then estimate sustainable monthly withdrawals to supplement your annuity.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Accumulation inputs</div>
+    <div class="g2" style="margin-bottom:14px">
+      <div><label class="lab">Current TSP balance ($)</label><input type="number" id="tsp-bal" value="75000" min="0"></div>
+      <div><label class="lab">Years to retirement</label><input type="number" id="tsp-yrs" value="10" min="1" max="40"></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label class="lab">Annual contribution (your share, $)</label>
+      <input type="number" id="tsp-contrib" value="8000" min="0">
+      <p class="note" style="margin-top:5px">2026 elective deferral limit: $23,500 (age 50+: $31,000 with catch-up). FERS agency automatic 1% + match up to 4% = add up to 5% of FF Base Pay to your contribution above.</p>
+    </div>
+    <div style="margin-bottom:12px">
+      <label class="lab">Agency match (5% of FF Base Pay est.)</label>
+      <input type="number" id="tsp-match" value="4750" min="0">
+      <p class="note" style="margin-top:5px">Auto-fills from the FF Base Pay calculated on the Pay tab (1% automatic + up to 4% match = 5%). Edit directly to override.</p>
+    </div>
+    <div>
+      <label class="lab">Expected annual return (%)</label>
+      <div class="range-wrap">
+        <input type="range" id="tsp-ret-range" min="3" max="10" step="0.5" value="6.5">
+        <span class="range-out" id="tsp-ret-out">6.5%</span>
+      </div>
+      <p class="note">C Fund (S&amp;P 500) long-run average ~10%; lifecycle funds ~5–7%; balanced ~6–7%. Use 5–7% for conservative planning.</p>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Withdrawal inputs</div>
+    <div class="g3">
+      <div>
+        <label class="lab">Withdrawal rate (%/yr)</label>
+        <div class="range-wrap">
+          <input type="range" id="tsp-wd-range" min="2" max="6" step="0.25" value="4">
+          <span class="range-out" id="tsp-wd-out">4.0%</span>
+        </div>
+        <p class="note">4% rule = widely cited sustainable rate. 3–3.5% more conservative for long retirements.</p>
+      </div>
+      <div>
+        <label class="lab">Post-retirement return (%)</label>
+        <div class="range-wrap">
+          <input type="range" id="tsp-pret-range" min="2" max="8" step="0.5" value="5">
+          <span class="range-out" id="tsp-pret-out">5.0%</span>
+        </div>
+      </div>
+      <div>
+        <label class="lab">Withdrawal period (years)</label>
+        <input type="number" id="tsp-wdyrs" value="30" min="5" max="50">
+      </div>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">TSP projection</div>
+    <div class="tile-row">
+      <div class="tile">
+        <h4>Balance at retirement</h4>
+        <div class="v" id="tsp-bal-ret">$0</div>
+        <div class="vs" id="tsp-bal-ret-sub">projected</div>
+      </div>
+      <div class="tile em">
+        <h4>Sustainable withdrawal / mo</h4>
+        <div class="v" id="tsp-mo">$0</div>
+        <div class="vs" id="tsp-mo-sub">at 4%/yr</div>
+      </div>
+      <div class="tile">
+        <h4>Total contributions</h4>
+        <div class="v" id="tsp-contribs-total">$0</div>
+        <div class="vs">you + agency</div>
+      </div>
+      <div class="tile">
+        <h4>Investment growth</h4>
+        <div class="v" id="tsp-growth">$0</div>
+        <div class="vs">above contributions</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div id="tspChart" role="img" aria-label="TSP balance growth chart over years to retirement" style="width:100%;height:100%"></div>
+    </div>
+
+    <details class="brk">
+      <summary class="brk-sum">Year-by-year projection</summary>
+      <table class="bt" id="tsp-yr-table">
+        <tr style="background:#f5f5f4"><td style="font-weight:700">Year</td><td style="font-weight:700;text-align:right">Balance</td><td style="font-weight:700;text-align:right">Contributions (yr)</td><td style="font-weight:700;text-align:right">Growth (yr)</td></tr>
+      </table>
+    </details>
+  </div>
+
+  <div class="sect ref blue-ref">
+    <div class="sect-title">TSP essentials</div>
+    <details>
+      <summary>FERS matching — capture the full agency contribution</summary>
+      <div class="body">
+        <p>FERS employees get: <b>1% automatic</b> agency contribution (regardless of what you put in), <b>plus</b> dollar-for-dollar match on your first 3% of FF Base Pay, <b>plus</b> 50 cents on the dollar for the next 2%. Full match requires you contribute at least 5% — the agency puts in 5% and you put in 5%, for 10% total into your TSP from the first dollar of your career.</p>
+        <p>The match is computed against <b>FF Base Pay</b>, not gross pay — so the higher FF Base Pay from this calculator is the right figure to use.</p>
+      </div>
+    </details>
+    <details>
+      <summary>The five core funds, plus the L Funds</summary>
+      <div class="body">
+        <p>TSP has five individual funds, each with a different risk/return profile:</p>
+        <table class="ctab">
+          <tr><td>G Fund</td><td>Government securities. No risk of loss of principal; returns track short-term Treasury rates (~4–5%). The only fund guaranteed not to lose value, but barely outpaces inflation long-term.</td></tr>
+          <tr><td>F Fund</td><td>Bond index (U.S. investment-grade bonds). Moderate, steady returns; moves opposite to interest rates.</td></tr>
+          <tr><td>C Fund</td><td>S&amp;P 500 index — large U.S. companies. ~10%/yr long-run average, but with significant year-to-year swings.</td></tr>
+          <tr><td>S Fund</td><td>Small/mid-cap U.S. stocks (everything outside the S&amp;P 500). Higher growth potential, higher volatility than C.</td></tr>
+          <tr><td>I Fund</td><td>International developed-market stocks. Adds geographic diversification; returns vary with currency and foreign markets.</td></tr>
+        </table>
+        <p style="margin-top:10px">The <b>L Funds (Lifecycle)</b> are pre-mixed combinations of all five, automatically rebalanced and gradually shifted toward G/F as the target date approaches. <b>L 2035</b> or <b>L 2040</b> are reasonable defaults if you plan to retire around that year — the fund handles the rebalancing automatically. <b>L Income</b> is the most conservative option, designed for retirees already drawing down their balance.</p>
+        <p>Most planners suggest moving toward income-oriented allocations (L Income, or a heavier G/F mix) in the 5–10 years before retirement to reduce the chance of a market downturn hitting right before you need the money.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Roth TSP vs Traditional TSP</summary>
+      <div class="body">
+        <p><b>Traditional TSP:</b> contributions reduce taxable income now; withdrawals — both contributions and growth — are taxed as ordinary income in retirement. Better if you expect a lower tax rate in retirement.</p>
+        <p><b>Roth TSP:</b> contributions are after-tax; <i>qualified</i> withdrawals (both contributions and growth) are tax-free. Better if you expect a higher rate later, or want tax-free income in retirement to reduce AGI and thus your Medicare premiums (IRMAA).</p>
+        <div class="callout blue"><b>The 59½ catch:</b> a Roth withdrawal is tax-free on the <i>growth</i> portion only if it is "qualified" — meaning both (a) 5 years have passed since your first Roth TSP contribution, and (b) you are age 59½ or older (or disabled). If you withdraw before 59½, the growth portion of a Roth withdrawal is taxed as ordinary income — even though your original contributions come out tax-free either way. TSP withdrawals are pro-rata, so you cannot choose to withdraw "just contributions" the way you sometimes can with a Roth IRA. See the next section for how this interacts with retiring at 50.</div>
+        <p>Given the substantial other income (annuity + SRS + household income) you may have in early retirement, Roth contributions during high-earning working years can still be valuable — but run the numbers with a tax professional.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Withdrawing TSP early — the special-provisions (age 50) exception</summary>
+      <div class="body">
+        <p>Normally, TSP withdrawals before age 59½ trigger a <b>10% early withdrawal penalty</b> on top of regular income tax. However, federal firefighters, law enforcement officers, and air traffic controllers have a specific exception: if you separate from federal service in or after the year you turn <b>50</b> (which covers the 25-years-at-any-age and 50-with-20-years retirement paths), withdrawals from TSP are <b>exempt from the 10% penalty</b> — even though you are well under 59½.</p>
+        <div class="callout"><b>What this exception does not change:</b> it removes the 10% penalty only. It does not make a Roth withdrawal "qualified." So:</div>
+        <ul>
+          <li><b>Traditional TSP:</b> withdraw penalty-free starting at retirement (age 50+); pay ordinary income tax as usual.</li>
+          <li><b>Roth TSP:</b> withdraw penalty-free, but if you are under 59½ <i>and</i> have not met the 5-year rule, the growth portion of each withdrawal is still taxed as ordinary income (pro-rata with your contributions). Once you turn 59½ <i>and</i> the 5-year clock has run, Roth withdrawals become fully tax-free.</li>
+        </ul>
+        <p>Practical takeaway: a firefighter retiring at 50 can tap traditional TSP penalty-free immediately. For Roth TSP, the contribution portion is always tax- and penalty-free, but the growth portion carries an income-tax bill until 59½ and the 5-year holding period are both satisfied — plan withdrawal sequencing accordingly, and confirm your situation with a tax professional before separating.</p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4 · SOCIAL SECURITY
+══════════════════════════════════════════════ -->
+<div class="page" id="page-ss">
+  <div class="page-head">
+    <h2>Social Security &amp; the SRS</h2>
+    <p>Two distinct benefits: the Special Retirement Supplement (your bridge to 62) and your actual Social Security benefit (claimed at 62, 67, or 70). Both are relevant to your total retirement picture.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Your inputs</div>
+    <div class="g3">
+      <div><label class="lab">Est. SS benefit at age 62 ($/mo)</label><input type="number" id="ss-mo62" value="1800" min="0">
+        <p class="note" style="margin-top:5px">Pull this from ssa.gov. The projection assumes you keep working — as an early retiree yours will be somewhat lower.</p>
+      </div>
+      <div><label class="lab">Est. SS benefit at age 67 FRA ($/mo)</label><input type="number" id="ss-mo67" value="2400" min="0"></div>
+      <div><label class="lab">Est. SS benefit at age 70 ($/mo)</label><input type="number" id="ss-mo70" value="3100" min="0"></div>
+    </div>
+    <div class="g3" style="margin-top:14px">
+      <div><label class="lab">Years of FERS service (for SRS)</label><input type="number" id="ss-fers-yrs" value="23" min="1" max="40"></div>
+      <div><label class="lab">Retirement age (to compute SRS duration)</label><input type="number" id="ss-ret-age" value="50" min="40" max="57"></div>
+      <div><label class="lab">Household earned income after retire ($/yr)</label><input type="number" id="ss-earned" value="0" min="0">
+        <p class="note" style="margin-top:5px">Your wages only — not your spouse's. Etsy/self-employment net counts.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Special Retirement Supplement (SRS)</div>
+    <div class="callout">
+      <b>What is the SRS?</b> It approximates the Social Security you earned <i>during federal service only</i>, paid monthly from your retirement date until you turn 62. It is separate from — and in addition to — your FERS annuity.
+    </div>
+    <div class="tile-row">
+      <div class="tile em">
+        <h4>SRS monthly amount</h4>
+        <div class="v" id="srs-mo">$0</div>
+        <div class="vs" id="srs-yr">$0/yr</div>
+      </div>
+      <div class="tile">
+        <h4>Duration (months to 62)</h4>
+        <div class="v" id="srs-months">0</div>
+        <div class="vs">months of SRS payments</div>
+      </div>
+      <div class="tile">
+        <h4>Total SRS received</h4>
+        <div class="v" id="srs-total">$0</div>
+        <div class="vs">before earnings-test reduction</div>
+      </div>
+      <div class="tile">
+        <h4>SRS after earnings test</h4>
+        <div class="v" id="srs-reduced">$0</div>
+        <div class="vs" id="srs-reduced-sub">if earned income above exempt amount</div>
+      </div>
+    </div>
+    <div id="srs-earnings-note" class="callout" style="margin-top:10px;display:none"></div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">SS claiming age comparison</div>
+    <div class="callout blue">
+      <b>Key insight:</b> Claiming at 62 means 5 years of earlier payments but a permanently reduced benefit. Waiting to 67 or 70 means a larger check for life. The breakeven is typically around age 78–82.
+    </div>
+    <div class="callout blue">
+      <b>How the 62/67/70 figures are calculated:</b> SS takes your highest 35 years of inflation-adjusted earnings, averages them (your "AIME"), and runs that average through a formula (your "PIA") to get your age-67 benefit. Age 62 = PIA reduced for claiming early; age 70 = PIA increased for delaying. If you stop working before age 62 with fewer than 35 years of earnings, the missing years count as <b>$0</b> in the average — pulling all three figures down. ssa.gov's projection assumes you keep earning until each claiming age, so it can overstate your real benefit if you retire early. To estimate your own: log into ssa.gov, look at your year-by-year earnings record, and mentally zero-out any years between your retirement and age 62/67/70 — the effect is roughly proportional across all three ages, so the 62/67/70 relationship stays similar even if all three numbers shift down a bit.
+    </div>
+    <div id="ss-cmp-bar" class="cmp-bar"></div>
+    <div class="chart-legend">
+      <span><span class="chart-legend-line" style="background:#b23a1e"></span>Claim at 62</span>
+      <span><span class="chart-legend-line dash" style="color:#185fa5"></span>Claim at 67</span>
+      <span><span class="chart-legend-line dot" style="color:#0f6e56"></span>Claim at 70</span>
+    </div>
+    <div class="chart-wrap">
+      <div id="ssChart" role="img" aria-label="Cumulative Social Security income by claiming age comparison" style="width:100%;height:100%"></div>
+    </div>
+    <p class="note" style="text-align:center;margin-top:2px">Age (years)</p>
+  </div>
+
+  <div class="sect ref">
+    <div class="sect-title">SRS rules in plain language</div>
+    <details>
+      <summary>How the SRS amount is calculated</summary>
+      <div class="body">
+        <p>Formula: <b>SRS = (age-62 SS estimate) × (FERS years ÷ 40)</b></p>
+        <p>Example: $1,800/mo SS estimate × (23 ÷ 40) = $1,035/mo SRS. Because your federal years are typically less than 40, the SRS is a fraction of your full SS benefit.</p>
+        <p>The age-62 figure from ssa.gov <b>overstates</b> your actual benefit as an early retiree because OPM assumes continued earnings. The real benefit will be somewhat lower. The SRS itself is not affected — it uses the ssa.gov figure as the base.</p>
+      </div>
+    </details>
+    <details>
+      <summary>The earnings test — when it applies and what it costs</summary>
+      <div class="body">
+        <p>For special-category employees (firefighters, LEOs, ATCs) who retire <b>before their MRA (age 57)</b>, the earnings test does <b>not</b> apply to the SRS until the year you reach your MRA. After that, wages or self-employment income above the annual exempt amount (~$23K, indexed) reduce the SRS by about $1 for every $2 over the limit.</p>
+        <p>Your spouse's income does <b>not</b> count. Only your own earned income (wages, self-employment net) counts.</p>
+        <div class="callout"><b>Practical implication:</b> If you retire at 50 and stay home until 57, no earnings test applies during those years. If you take a part-time job earning $35K, the test starts at age 57 and would reduce the SRS by roughly $6K/yr — but you were also earning $35K, so the net picture is still positive.</div>
+      </div>
+    </details>
+    <details>
+      <summary>Coordinating SRS with actual Social Security</summary>
+      <div class="body">
+        <p>The SRS stops the month you turn 62 — you then have to decide when to claim actual Social Security (62, FRA ~67, or 70). These are two completely separate decisions:</p>
+        <ul>
+          <li>The SRS amount is fixed by the formula and cannot be increased by waiting.</li>
+          <li>Actual SS grows ~8%/year for each year you delay from 62 to 70.</li>
+          <li>You can take the SRS in full and still wait to claim SS at 70 — the two do not interact.</li>
+        </ul>
+        <p>If you are in good health and have other income during ages 62 through 70, waiting to claim SS at 70 is often optimal, as it maximizes the inflation-protected lifetime annuity.</p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5 · TOTAL PICTURE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-picture">
+  <div class="page-head">
+    <h2>Total Retirement Picture</h2>
+    <p>Pulls together all four modules into a single net-income view — pre-62 (annuity + SRS + TSP), post-62 (annuity + SS + TSP), after taxes and FEHB.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Final adjustments</div>
+    <div class="g4">
+      <div><label class="lab">Survivor election</label>
+        <select id="pic-surv">
+          <option value="0">No survivor benefit</option>
+          <option value="0.05">25% (−5% annuity)</option>
+          <option value="0.10" selected>50% (−10% annuity)</option>
+        </select>
+      </div>
+      <div><label class="lab">FEHB premium — your share ($/mo)</label><input type="number" id="pic-fehb" value="400" min="0"></div>
+      <div><label class="lab">Other household income ($/yr)</label><input type="number" id="pic-other" value="120000" min="0">
+        <p class="note" style="margin-top:4px">Stacks under your pension to set the marginal rate.</p>
+      </div>
+      <div><label class="lab">State</label>
+        <select id="pic-state">
+          <option value="DE" selected>Delaware</option>
+          <option value="PA">Pennsylvania</option>
+          <option value="MD">Maryland</option>
+          <option value="VA">Virginia</option>
+          <option value="none">No state income tax</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label class="lab">SS claiming age</label>
+      <div class="seg" id="ssclaim-seg" style="max-width:260px">
+        <button data-age="62" class="on">62</button>
+        <button data-age="67">67</button>
+        <button data-age="70">70</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Net monthly income summary</div>
+    <div class="picture-grid">
+      <div>
+        <div class="badge ember" style="margin-bottom:10px">Before age 62 (with SRS)</div>
+        <div id="pre62-stack" class="stack-bar"></div>
+        <div id="pre62-rows"></div>
+        <div id="pre62-net" class="divider-row" style="margin-top:8px"></div>
+      </div>
+      <div>
+        <div class="badge blue" style="margin-bottom:10px">After age 62 (with Social Security)</div>
+        <div id="post62-stack" class="stack-bar"></div>
+        <div id="post62-rows"></div>
+        <div id="post62-net" class="divider-row" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Survivor / FEHB continuity</div>
+    <div id="surv-block"></div>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">Detailed net income table</div>
+    <div id="net-detail-bar" class="cmp-bar"></div>
+    <p class="note" style="margin-top:10px">Federal (MFJ, $31,500 standard deduction). State rates vary by selection. FEHB paid with after-tax dollars in retirement. Your other household income stacks under the pension — which is why the effective rate looks higher. Verify with a tax professional.</p>
+  </div>
+
+  <div class="foot">
+    Estimates only. Tax calculations are illustrative (2025–2026 brackets) and do not account for TSP withdrawals, itemized deductions, QBI, or all income interactions. Pension exclusion amounts and state rules current as of 2026 but subject to change. Always verify with agency HR and a qualified financial planner.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 6 · REFERENCE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-ref">
+  <div class="page-head">
+    <h2>Reference Guide</h2>
+    <p>Statutes, regulations, and plain-language explanations. Everything grounded in primary law.</p>
+  </div>
+
+  <div class="sect ref">
+    <div class="sect-title">FERS special provisions — eligibility &amp; formula</div>
+    <details open>
+      <summary>Eligibility (5 U.S.C. 8412(d))</summary>
+      <div class="body">
+        <p>A covered 0081 firefighter can retire with an <b>immediate, unreduced annuity</b> at:</p>
+        <ul>
+          <li><b>Age 50 with 20 years</b> of covered special-provisions service, OR</li>
+          <li><b>Any age with 25 years</b> of covered service.</li>
+        </ul>
+        <p>There is no age-based reduction for retiring before 55 or 62. Mandatory retirement is <b>age 57 with 20 years</b>. Covered employees pay an extra <b>0.5%</b> of basic pay into FERS each pay period. Unlike regular FERS, COLAs apply to the annuity <b>before age 62</b>.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Annuity computation (5 U.S.C. 8415(d))</summary>
+      <div class="body">
+        <div class="callout">1.7% × High-3 × (first 20 years) &nbsp;+&nbsp; 1.0% × High-3 × (years beyond 20)</div>
+        <p>Example: $95,000 High-3, 25 years → (34% + 5%) × $95,000 = <b>$37,050/yr</b> base annuity before survivor reduction.</p>
+        <p>Unused sick leave counts toward the <i>computation</i> (adds service years) but NOT toward eligibility for the special-provisions retirement.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Survivor election &amp; FEHB continuity</summary>
+      <div class="body">
+        <p>Electing a survivor annuity reduces the basic annuity: a <b>50% survivor benefit</b> reduces your annuity by 10%; a <b>25% survivor benefit</b> reduces it by 5%.</p>
+        <p>Continued FEHB eligibility for a surviving spouse <b>generally requires</b> at least some survivor annuity to be in place. Treat the survivor election and health-coverage continuity as a single decision — you cannot un-elect survivor benefits after retirement without specific circumstances.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="sect ref teal-ref">
+    <div class="sect-title">Pay mechanics — the High-3 foundation</div>
+    <details>
+      <summary>The firefighter pay framework (5 U.S.C. 5545b)</summary>
+      <div class="body">
+        <p>The 1998 firefighter pay reform created a special pay structure. Under <b>5 CFR Part 550, Subpart M</b>:</p>
+        <ul>
+          <li>Hourly rate = annual GS rate (with locality) ÷ 2,756 (53 hrs/wk × 52)</li>
+          <li>Creditable basic pay = straight-time rate × all scheduled tour hours, per pay period × 26</li>
+          <li>The differential question: under Subpart M, a firefighter generally may NOT receive separate Sunday/night/holiday premium pay (5 CFR 550.1306). If your 25% differential is paid as a distinct premium, it does NOT count toward your High-3. If it is paid under the older <b>5 U.S.C. 5545(c)</b> standby regime (up to 25%, capped at GS-10), it IS creditable. Check your LES/SF-50 pay code.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="sect ref blue-ref">
+    <div class="sect-title">Primary sources &amp; how to verify</div>
+    <details open>
+      <summary>Statutes &amp; regulations</summary>
+      <div class="body">
+        <table class="ctab">
+          <tr><td>5 U.S.C. 5545b</td><td>Firefighter pay framework; the 2,756 rate and special pay structure.</td></tr>
+          <tr><td>5 CFR 550, Subpart M (§§ 550.1301–1307)</td><td>Implements 5545b. Key: §550.1305 (High-3 driver), §550.1302 (definitions), §550.1306 (no separate premiums).</td></tr>
+          <tr><td>5 U.S.C. 5545(c)</td><td>Older standby-duty premium — creditable if your differential is paid under this authority.</td></tr>
+          <tr><td>5 U.S.C. 8412(d)</td><td>FERS special-provisions retirement eligibility.</td></tr>
+          <tr><td>5 U.S.C. 8415(d)</td><td>FERS annuity computation — the 1.7%/1.0% enhanced multiplier.</td></tr>
+          <tr><td>5 CFR Part 842</td><td>FERS basic annuity, special provisions, and survivor elections.</td></tr>
+          <tr><td>CSRS/FERS Handbook (OPM)</td><td>Operational guidance used by HR offices — opm.gov retirement center.</td></tr>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>How to confirm your own numbers</summary>
+      <div class="body">
+        <ul>
+          <li>Request an <b>official annuity estimate</b> from agency HR — this is the authoritative figure.</li>
+          <li>Check <b>SF-50, Block 30</b> for your retirement coverage code (should show special-provisions).</li>
+          <li>Read your <b>LES / pay authority</b> to identify whether your differential is 5545(c) standby (creditable) or a separate premium (not creditable).</li>
+          <li>Pull your <b>ssa.gov</b> my Social Security account for your age-62, age-67, and age-70 estimates — note that the estimates assume continued earnings to FRA.</li>
+          <li>Contact TSP at <b>tsp.gov</b> for your current balance, fund allocation, and beneficiary designation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="sect ref">
+    <div class="sect-title">Glossary of terms</div>
+    <details>
+      <summary>Acronyms used throughout this suite</summary>
+      <div class="body">
+        <table class="ctab">
+          <tr><td>FF Base Pay</td><td>Creditable basic pay for a firefighter under 5 CFR 550.1305 — the figure used for High-3, TSP contributions, and FEGLI. Higher than gross pay's "regular" portion because it credits all scheduled tour hours at straight time.</td></tr>
+          <tr><td>High-3</td><td>The average of your three highest consecutive years of FF Base Pay — the basis for your FERS annuity.</td></tr>
+          <tr><td>FERS</td><td>Federal Employees Retirement System — the pension system covering most federal employees hired after 1983.</td></tr>
+          <tr><td>SRS</td><td>Special Retirement Supplement — a bridge benefit paid from retirement until age 62, approximating the Social Security earned during federal service.</td></tr>
+          <tr><td>MRA</td><td>Minimum Retirement Age — age 57 for most special-category employees born 1970 or later. Relevant to when the Social Security earnings test begins applying to the SRS.</td></tr>
+          <tr><td>COLA</td><td>Cost-of-Living Adjustment — an annual increase applied to annuities (and to locality pay in some contexts) to offset inflation.</td></tr>
+          <tr><td>TSP</td><td>Thrift Savings Plan — the federal government's defined-contribution retirement savings plan, similar to a 401(k).</td></tr>
+          <tr><td>FEHB</td><td>Federal Employees Health Benefits — the health insurance program available to federal employees and, with a survivor annuity in place, eligible retirees and surviving spouses.</td></tr>
+          <tr><td>FEGLI</td><td>Federal Employees' Group Life Insurance — the government's group life insurance program.</td></tr>
+          <tr><td>AIME / PIA</td><td>Average Indexed Monthly Earnings / Primary Insurance Amount — the two-step calculation Social Security uses to turn your top 35 years of earnings into your monthly benefit at full retirement age.</td></tr>
+          <tr><td>IRMAA</td><td>Income-Related Monthly Adjustment Amount — an income-based surcharge on Medicare Part B and Part D premiums for higher-income retirees.</td></tr>
+          <tr><td>GS</td><td>General Schedule — the standard federal pay scale by grade and step, before the firefighter-specific pay framework is applied.</td></tr>
+          <tr><td>OPM</td><td>Office of Personnel Management — the federal agency that administers FERS and issues official annuity estimates.</td></tr>
+        </table>
+      </div>
+    </details>
+  </div>
+</div>
+
+</div><!-- end .pages -->
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const BASE={"3":[27708,28632,29556,30480,31404,32328,33252,34176,35100,36024],"4":[31103,32140,33177,34214,35251,36288,37325,38362,39399,40436],"5":[34799,35959,37119,38279,39439,40599,41759,42919,44079,45239],"6":[38791,40084,41377,42670,43963,45256,46549,47842,49135,50428],"7":[43106,44543,45980,47417,48854,50291,51728,53165,54602,56039],"8":[47738,49329,50920,52511,54102,55693,57284,58875,60466,62057],"9":[52727,54485,56243,58001,59759,61517,63275,65033,66791,68549],"10":[58064,59999,61934,63869,65804,67739,69674,71609,73544,75479],"11":[63795,65922,68049,70176,72303,74430,76557,78684,80811,82938],"12":[76463,79012,81561,84110,86659,89208,91757,94306,96855,99404],"13":[90925,93956,96987,100018,103049,106080,109111,112142,115173,118204],"14":[107446,111028,114610,118192,121774,125356,128938,132520,136102,139684]};
+const LOCS=[{"name":"Rest of the United States","loc":0.1706,"cola":0.0},{"name":"Alaska-Anchorage-Fairbanks-Juneau","loc":0.3236,"cola":0.0149},{"name":"Alaska-Rest of Alaska","loc":0.3236,"cola":0.03},{"name":"Albany-Schenectady, NY-MA","loc":0.2077,"cola":0.0},{"name":"Albuquerque-Santa Fe-Las Vegas, NM","loc":0.1833,"cola":0.0},{"name":"Atlanta-Athens-Clarke County-Sandy Springs, GA-AL","loc":0.2379,"cola":0.0},{"name":"Austin-Round Rock-Georgetown, TX","loc":0.2035,"cola":0.0},{"name":"Birmingham-Hoover-Talladega, AL","loc":0.1824,"cola":0.0},{"name":"Boston-Worcester-Providence, MA-RI-NH-ME","loc":0.3258,"cola":0.0},{"name":"Buffalo-Cheektowaga-Olean, NY","loc":0.2241,"cola":0.0},{"name":"Burlington-South Burlington-Barre, VT","loc":0.1945,"cola":0.0},{"name":"Charlotte-Concord, NC-SC","loc":0.1967,"cola":0.0},{"name":"Chicago-Naperville, IL-IN-WI","loc":0.3086,"cola":0.0},{"name":"Cincinnati-Wilmington-Maysville, OH-KY-IN","loc":0.2193,"cola":0.0},{"name":"Cleveland-Akron-Canton, OH","loc":0.2223,"cola":0.0},{"name":"Colorado Springs, CO","loc":0.2015,"cola":0.0},{"name":"Columbus-Marion-Zanesville, OH","loc":0.2215,"cola":0.0},{"name":"Corpus Christi-Kingsville-Alice, TX","loc":0.1763,"cola":0.0},{"name":"Dallas-Fort Worth, TX-OK","loc":0.2726,"cola":0.0},{"name":"Davenport-Moline, IA-IL","loc":0.1893,"cola":0.0},{"name":"Dayton-Springfield-Kettering, OH","loc":0.2142,"cola":0.0},{"name":"Denver-Aurora, CO","loc":0.3052,"cola":0.0},{"name":"Des Moines-Ames-West Des Moines, IA","loc":0.1801,"cola":0.0},{"name":"Detroit-Warren-Ann Arbor, MI","loc":0.2912,"cola":0.0},{"name":"Fresno-Madera-Hanford, CA","loc":0.1765,"cola":0.0},{"name":"Harrisburg-Lebanon, PA","loc":0.1943,"cola":0.0},{"name":"Hartford-East Hartford, CT-MA","loc":0.3208,"cola":0.0},{"name":"Hawaii-Honolulu-Kauai-Maui and Kalawao","loc":0.2221,"cola":0.0864},{"name":"Hawaii-(County)","loc":0.2221,"cola":0.0291},{"name":"Houston-The Woodlands, TX","loc":0.35,"cola":0.0},{"name":"Huntsville-Decatur, AL","loc":0.2191,"cola":0.0},{"name":"Indianapolis-Carmel-Muncie, IN","loc":0.1815,"cola":0.0},{"name":"Kansas City-Overland Park-Kansas City, MO-KS","loc":0.1897,"cola":0.0},{"name":"Laredo, TX","loc":0.2159,"cola":0.0},{"name":"Las Vegas-Henderson, NV-AZ","loc":0.1957,"cola":0.0},{"name":"Los Angeles-Long Beach, CA","loc":0.3647,"cola":0.0},{"name":"Miami-Fort Lauderdale-Port St. Lucie, FL","loc":0.2467,"cola":0.0},{"name":"Milwaukee-Racine-Waukesha, WI","loc":0.2242,"cola":0.0},{"name":"Minneapolis-St. Paul, MN-WI","loc":0.2762,"cola":0.0},{"name":"New York-Newark, NY-NJ-CT-PA","loc":0.3795,"cola":0.0},{"name":"Omaha-Council Bluffs-Fremont, NE-IA","loc":0.1823,"cola":0.0},{"name":"Palm Bay-Melbourne-Titusville, FL","loc":0.1793,"cola":0.0},{"name":"Philadelphia-Reading-Camden, PA-NJ-DE-MD","loc":0.2899,"cola":0.0},{"name":"Phoenix-Mesa, AZ","loc":0.2245,"cola":0.0},{"name":"Pittsburgh-New Castle-Weirton, PA-OH-WV","loc":0.2103,"cola":0.0},{"name":"Portland-Vancouver-Salem, OR-WA","loc":0.2613,"cola":0.0},{"name":"Raleigh-Durham-Cary, NC","loc":0.2224,"cola":0.0},{"name":"Reno-Fernley, NV","loc":0.1752,"cola":0.0},{"name":"Richmond, VA","loc":0.2228,"cola":0.0},{"name":"Rochester-Batavia-Seneca Falls, NY","loc":0.1788,"cola":0.0},{"name":"Sacramento-Roseville, CA-NV","loc":0.2976,"cola":0.0},{"name":"San Antonio-New Braunfels-Pearsall, TX","loc":0.1878,"cola":0.0},{"name":"San Diego-Chula Vista-Carlsbad, CA","loc":0.3372,"cola":0.0},{"name":"San Jose-San Francisco-Oakland, CA","loc":0.4634,"cola":0.0},{"name":"Seattle-Tacoma, WA","loc":0.3157,"cola":0.0},{"name":"Spokane-Spokane Valley-Coeur d'Alene, WA-ID","loc":0.1767,"cola":0.0},{"name":"St. Louis-St. Charles-Farmington, MO-IL","loc":0.2003,"cola":0.0},{"name":"Tucson-Nogales, AZ","loc":0.1928,"cola":0.0},{"name":"Virginia Beach-Norfolk, VA-NC","loc":0.188,"cola":0.0},{"name":"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA","loc":0.3394,"cola":0.0},{"name":"Puerto Rico","loc":0.1706,"cola":0.0249},{"name":"U.S. Virgin Islands","loc":0.1706,"cola":0.1188},{"name":"Guam and Northern Mariana Islands","loc":0.1706,"cola":0.1188},{"name":"Basic Pay (No Locality or COLA)","loc":0.0,"cola":0.0}];
+
+const r0=x=>Math.round(x);
+const r2=x=>Math.sign(x)*Math.round(Math.abs(x)*100+1e-7)/100;
+const usd=(n,d=0)=>"$"+Math.round(n).toLocaleString("en-US");
+const usd2=(n)=>"$"+r2(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+/* ═══════════════════════════════════════════
+   LIGHTWEIGHT SVG LINE CHART (no external deps)
+═══════════════════════════════════════════ */
+function niceCeil(v){
+  if(v<=0) return 1;
+  const mag=Math.pow(10,Math.floor(Math.log10(v)));
+  return Math.ceil(v/mag)*mag;
+}
+function svgLineChart(containerId,series,xLabels,opts){
+  opts=opts||{};
+  const yFmt=opts.yFmt||(v=>v);
+  const w=680,h=opts.height||240;
+  const padL=54,padR=14,padT=14,padB=28;
+  const plotW=w-padL-padR,plotH=h-padT-padB;
+  const allVals=series.flatMap(s=>s.data);
+  const maxV=Math.max(...allVals,0);
+  const minV=Math.min(...allVals,0);
+  const niceMax=niceCeil(maxV)||1;
+  const niceMin=minV<0?-niceCeil(-minV):0;
+  const n=xLabels.length;
+  const xPos=i=>padL+(n<=1?0:(i/(n-1))*plotW);
+  const yPos=v=>padT+plotH-((v-niceMin)/(niceMax-niceMin))*plotH;
+  const yTicks=opts.yTickCount||4;
+  let svg=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;font-family:ui-sans-serif,system-ui,sans-serif">`;
+  for(let t=0;t<=yTicks;t++){
+    const val=niceMin+(niceMax-niceMin)*t/yTicks;
+    const yy=yPos(val);
+    svg+=`<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${w-padR}" y2="${yy.toFixed(1)}" stroke="#e7e5e4" stroke-width="1"/>`;
+    svg+=`<text x="${padL-8}" y="${(yy+4).toFixed(1)}" text-anchor="end" font-size="11" fill="#78716c">${yFmt(val)}</text>`;
+  }
+  const maxXTicks=opts.maxXTicks||8;
+  const step=Math.max(1,Math.ceil(n/maxXTicks));
+  for(let i=0;i<n;i+=step){
+    svg+=`<text x="${xPos(i).toFixed(1)}" y="${h-6}" text-anchor="middle" font-size="11" fill="#78716c">${xLabels[i]}</text>`;
+  }
+  series.forEach(s=>{
+    let pathD='';
+    s.data.forEach((v,i)=>{ pathD+=(i===0?'M':'L')+xPos(i).toFixed(1)+','+yPos(v).toFixed(1)+' '; });
+    if(s.area){
+      const areaD=pathD+`L${xPos(n-1).toFixed(1)},${yPos(niceMin).toFixed(1)} L${xPos(0).toFixed(1)},${yPos(niceMin).toFixed(1)} Z`;
+      svg+=`<path d="${areaD}" fill="${s.color}" opacity="0.08"/>`;
+    }
+    svg+=`<path d="${pathD.trim()}" fill="none" stroke="${s.color}" stroke-width="2"${s.dash?` stroke-dasharray="${s.dash}"`:''}/>`;
+    if(s.points){ s.data.forEach((v,i)=>{ svg+=`<circle cx="${xPos(i).toFixed(1)}" cy="${yPos(v).toFixed(1)}" r="3" fill="${s.color}"/>`; }); }
+  });
+  svg+='</svg>';
+  document.getElementById(containerId).innerHTML=svg;
+}
+
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  renderAll();
+}
+
+/* ═══════════════════════════════════════════
+   PAGE 1 · PAY
+═══════════════════════════════════════════ */
+function fillLoc(s){LOCS.forEach(l=>{const o=document.createElement('option');o.value=l.name;o.textContent=l.name;s.appendChild(o);});s.value='Philadelphia-Reading-Camden, PA-NJ-DE-MD';}
+function fillGrade(s){Object.keys(BASE).forEach(g=>{const o=document.createElement('option');o.value=g;o.textContent='GS-'+g;s.appendChild(o);});}
+function fillStep(s){for(let i=1;i<=10;i++){const o=document.createElement('option');o.value=i;o.textContent='Step '+i;s.appendChild(o);}}
+fillLoc(document.getElementById('locA'));
+fillGrade(document.getElementById('gradeA'));
+fillStep(document.getElementById('stepA'));
+document.getElementById('gradeA').value='7';
+document.getElementById('stepA').value='1';
+
+let hoursA=56;
+const seg=document.getElementById('hseg');
+const hcust=document.getElementById('hcustom');
+seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); hcust.value=''; hoursA=+b.dataset.h; renderAll();
+}));
+hcust.addEventListener('input',()=>{
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+  const v=+hcust.value; if(v>=40) hoursA=v; renderAll();
+});
+
+function computePay(locName,hours,grade,step,opt){
+  opt=opt||{};
+  const diffHrs=opt.diffHrs||0, diffPct=(opt.diffPct||0)/100, otThresh=opt.otThresh||106;
+  const L=LOCS.find(l=>l.name===locName)||LOCS[0];
+  const baseA=BASE[grade][step-1];
+  const gsAdj=r0(baseA*(1+L.loc));
+  const ffRate=r2(gsAdj/2756);
+  const tot=hours*2;
+  const otH=Math.max(0,tot-otThresh);
+  const nonOtH=tot-otH;
+  const ffPay=r2(ffRate*nonOtH);
+  const gs10=r0(58064*(1+L.loc)), cap=r2(r2(gs10/2087)*1.5);
+  const raw=r2(ffRate*1.5);
+  const otRate=raw<cap?raw:(cap<ffRate?ffRate:cap);
+  const otPay=r2(otRate*otH);
+  const diffPay=r2(ffRate*diffPct*diffHrs);
+  const colaPay=r2(r2(ffRate*L.cola)*tot);
+  const pp=r2(ffPay+otPay+colaPay+diffPay);
+  const annual=r2(pp*26);
+  const ffBase=r2(ffRate*tot*26);
+  return{gsAdj,ffRate,ffPay,otRate,otPay,diffPay,colaPay,pp,annual,ffBase,otH,nonOtH,diffHrs};
+}
+
+let lastPayResult = null;
+let tspMatchManual = false;
+
+function renderPay(){
+  const opt={
+    diffHrs:+document.getElementById('diffHrs').value||0,
+    diffPct:+document.getElementById('diffPct').value||0,
+    otThresh:+document.getElementById('otThresh').value||106
+  };
+  const h=hoursA;
+  const c=computePay(
+    document.getElementById('locA').value, h,
+    +document.getElementById('gradeA').value,
+    +document.getElementById('stepA').value, opt
+  );
+  lastPayResult=c;
+  document.getElementById('annualA').textContent=usd(c.annual);
+  document.getElementById('ppA').textContent=usd2(c.pp)+' / pay period ('+h+' hrs/wk)';
+  document.getElementById('gsA').textContent=usd(c.gsAdj);
+  document.getElementById('ffbaseA').textContent=usd(c.ffBase);
+
+  const matchEst=r0(c.ffBase*0.05);
+  document.getElementById('tspMatchEst').textContent=usd(matchEst);
+  const tspMatchEl=document.getElementById('tsp-match');
+  if(tspMatchEl && !tspMatchManual) tspMatchEl.value=matchEst;
+
+  const t=document.getElementById('brkA');
+  const fmt={gsAdj:0,ffRate:2,ffPay:2,otRate:2,otPay:2,diffPay:2,colaPay:2,pp:2,annual:0,ffBase:0};
+  for(const k in fmt){
+    const cell=t.querySelector('[data-k="'+k+'"]');
+    if(cell) cell.textContent=k==='ffRate'||k==='otRate'?usd2(c[k]):usd(c[k]);
+  }
+  document.getElementById('otHlbl').textContent=c.otH;
+  document.getElementById('nonOtLbl').textContent=c.nonOtH;
+  document.getElementById('diffLbl').textContent=c.diffHrs;
+  document.getElementById('diffPctLbl').textContent=opt.diffPct;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE 2 · HIGH-3
+═══════════════════════════════════════════ */
+let h3Years=[0,0,0];
+
+function buildH3Inputs(){
+  const wrap=document.getElementById('h3-year-inputs');
+  wrap.innerHTML='';
+  h3Years.forEach((v,i)=>{
+    const row=document.createElement('div');
+    row.className='yr-row';
+    row.innerHTML=`<div class="yr-label">Year ${i+1}</div>
+      <div><label class="lab" style="margin-bottom:4px">FF Base Pay ($)</label>
+        <input type="number" id="h3y-${i}" value="${v||''}" min="0" placeholder="e.g. 95000"></div>`;
+    wrap.appendChild(row);
+    row.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{ h3Years[i]=+document.getElementById('h3y-'+i).value||0; renderH3(); }));
+  });
+}
+
+function addH3Year(){ if(h3Years.length<10){ h3Years.push(0); buildH3Inputs(); renderH3(); }}
+function removeH3Year(){ if(h3Years.length>3){ h3Years.pop(); buildH3Inputs(); renderH3(); }}
+
+function autoFillHigh3(){
+  if(!lastPayResult){ renderPay(); }
+  const base=lastPayResult?lastPayResult.ffBase:0;
+  for(let i=0;i<h3Years.length;i++) h3Years[i]=base;
+  buildH3Inputs(); renderH3();
+}
+
+function renderH3(){
+  const vals=h3Years.map((v,i)=>{
+    const inp=document.getElementById('h3y-'+i);
+    return inp?+inp.value||0:v;
+  });
+  // Find best 3 consecutive (with exactly 3 entries this is just their average)
+  let bestAvg=0, bestStart=0;
+  for(let i=0;i<=vals.length-3;i++){
+    const avg=(vals[i]+vals[i+1]+vals[i+2])/3;
+    if(avg>bestAvg){ bestAvg=avg; bestStart=i; }
+  }
+  const high3=bestAvg;
+  document.getElementById('h3-result').textContent=usd(high3);
+  document.getElementById('h3-window').textContent=vals.length>3
+    ? `Best window: Years ${bestStart+1}–${bestStart+3}`
+    : 'Average of the 3 years entered';
+
+  const yrs=+document.getElementById('h3-yrs').value||23;
+  const f=Math.min(yrs,20), b=Math.max(yrs-20,0);
+  const mult=0.017*f+0.01*b;
+  const ann=high3*mult;
+  document.getElementById('h3-annuity').textContent=usd(ann)+'/yr';
+  document.getElementById('h3-annuity-sub').textContent=(mult*100).toFixed(1)+'% multiplier · '+yrs+' years';
+  document.getElementById('h3-annuity-mo').textContent=usd(ann/12)+'/mo';
+
+  // Table (only shown when comparing more than 3 years)
+  const tw=document.getElementById('h3-table-wrap');
+  if(vals.length>3){
+    let html='<table class="bt"><tr style="background:#f5f5f4"><td style="font-weight:700">Year</td><td style="font-weight:700;text-align:right">FF Base Pay</td><td style="font-weight:700;text-align:right">In High-3 window?</td></tr>';
+    vals.forEach((v,i)=>{
+      const inWindow=i>=bestStart&&i<bestStart+3;
+      html+=`<tr class="${inWindow?'bt-hl':''}"><td>Year ${i+1}</td><td style="text-align:right;font-family:ui-monospace,monospace">${usd(v)}</td><td style="text-align:right">${inWindow?'✓ Yes':'—'}</td></tr>`;
+    });
+    html+=`<tr class="bt-hl"><td><b>High-3 Average</b></td><td style="text-align:right;font-family:ui-monospace,monospace">${usd(high3)}</td><td></td></tr>`;
+    html+='</table>';
+    tw.innerHTML=html;
+  } else {
+    tw.innerHTML='';
+  }
+}
+
+buildH3Inputs();
+
+/* ═══════════════════════════════════════════
+   PAGE 3 · TSP
+═══════════════════════════════════════════ */
+function syncRange(rangeId,outId,suffix){
+  const r=document.getElementById(rangeId), o=document.getElementById(outId);
+  const upd=()=>{ o.textContent=parseFloat(r.value).toFixed(suffix==='%'?1:0)+suffix; };
+  r.addEventListener('input',()=>{ upd(); renderTSP(); }); upd();
+}
+syncRange('tsp-ret-range','tsp-ret-out','%');
+syncRange('tsp-wd-range','tsp-wd-out','%');
+syncRange('tsp-pret-range','tsp-pret-out','%');
+
+function renderTSP(){
+  const bal0=+document.getElementById('tsp-bal').value||0;
+  const yrs=+document.getElementById('tsp-yrs').value||10;
+  const contrib=+document.getElementById('tsp-contrib').value||0;
+  const match=+document.getElementById('tsp-match').value||0;
+  const ret=parseFloat(document.getElementById('tsp-ret-range').value)/100;
+  const wdRate=parseFloat(document.getElementById('tsp-wd-range').value)/100;
+  const wdYrs=+document.getElementById('tsp-wdyrs').value||30;
+  const annualContrib=contrib+match;
+  const totalContribYrs=annualContrib*yrs+bal0;
+
+  // FV with contributions
+  let bal=bal0;
+  const history=[{yr:0,bal}];
+  for(let i=0;i<yrs;i++){ bal=bal*(1+ret)+annualContrib; history.push({yr:i+1,bal:r0(bal)}); }
+  const finalBal=r0(bal);
+  const growth=finalBal-r0(totalContribYrs);
+
+  document.getElementById('tsp-bal-ret').textContent=usd(finalBal);
+  document.getElementById('tsp-bal-ret-sub').textContent=yrs+' years at '+parseFloat(document.getElementById('tsp-ret-range').value).toFixed(1)+'%/yr';
+  const moWd=r0(finalBal*wdRate/12);
+  document.getElementById('tsp-mo').textContent=usd(moWd)+'/mo';
+  document.getElementById('tsp-mo-sub').textContent='at '+parseFloat(document.getElementById('tsp-wd-range').value).toFixed(1)+'%/yr withdrawal rate';
+  document.getElementById('tsp-contribs-total').textContent=usd(r0(totalContribYrs)-bal0);
+  document.getElementById('tsp-growth').textContent=usd(Math.max(0,growth));
+
+  // Chart
+  const labels=history.map(h=>'Yr '+h.yr);
+  const data=history.map(h=>h.bal);
+  svgLineChart('tspChart',
+    [{data,color:'#b23a1e',area:true,points:data.length<=15}],
+    labels,
+    {height:260,yFmt:v=>'$'+Math.round(v/1000)+'K',maxXTicks:8}
+  );
+
+  // Year table
+  let html='<tr style="background:#f5f5f4"><td style="font-weight:700">Year</td><td style="font-weight:700;text-align:right">Balance</td><td style="font-weight:700;text-align:right">Annual contributions</td><td style="font-weight:700;text-align:right">Growth (cumulative)</td></tr>';
+  history.forEach(h=>{
+    const contribSoFar=h.yr*annualContrib+bal0;
+    const gr=Math.max(0,h.bal-r0(contribSoFar));
+    html+=`<tr><td>${h.yr===0?'Start':'Year '+h.yr}</td><td style="text-align:right;font-family:ui-monospace,monospace">${usd(h.bal)}</td><td style="text-align:right;font-family:ui-monospace,monospace">${h.yr===0?'—':usd(annualContrib)}</td><td style="text-align:right;font-family:ui-monospace,monospace">${usd(gr)}</td></tr>`;
+  });
+  document.getElementById('tsp-yr-table').innerHTML=html;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE 4 · SOCIAL SECURITY
+═══════════════════════════════════════════ */
+function renderSS(){
+  const ss62=+document.getElementById('ss-mo62').value||0;
+  const ss67=+document.getElementById('ss-mo67').value||0;
+  const ss70=+document.getElementById('ss-mo70').value||0;
+  const fersYrs=+document.getElementById('ss-fers-yrs').value||23;
+  const retAge=+document.getElementById('ss-ret-age').value||50;
+  const earned=+document.getElementById('ss-earned').value||0;
+  const EXEMPT=23400; // 2026 approx
+
+  // SRS
+  const srsMo=r0(ss62*(fersYrs/40));
+  const srsYr=srsMo*12;
+  const srsMonths=Math.max(0,(62-retAge)*12);
+  const srsTotal=r0(srsMo*srsMonths);
+
+  // Earnings test (after MRA = 57)
+  const mra=57;
+  const exemptExcess=Math.max(0,earned-EXEMPT);
+  const srsReduction=r0(exemptExcess/2/12); // monthly reduction
+  const srsNet=Math.max(0,srsMo-srsReduction);
+
+  document.getElementById('srs-mo').textContent=usd(srsMo)+'/mo';
+  document.getElementById('srs-yr').textContent=usd(srsYr)+'/yr';
+  document.getElementById('srs-months').textContent=srsMonths;
+  document.getElementById('srs-total').textContent=usd(srsTotal);
+  document.getElementById('srs-reduced').textContent=usd(srsNet)+'/mo';
+
+  const note=document.getElementById('srs-earnings-note');
+  if(earned>0 && retAge<mra){
+    note.style.display='block';
+    note.innerHTML=`<b>Earnings test applies after age ${mra}:</b> With $${earned.toLocaleString()} earned income, the SRS would be reduced by approximately ${usd(srsReduction*12)}/yr once you reach age ${mra}. Before age ${mra}, the test does not apply and you receive the full ${usd(srsMo)}/mo.`;
+  } else if(earned>EXEMPT){
+    note.style.display='block';
+    note.innerHTML=`<b>Earnings test active:</b> With $${earned.toLocaleString()} earned income above the ~$${EXEMPT.toLocaleString()} exempt amount, the SRS is reduced by ~${usd(srsReduction*12)}/yr.`;
+  } else { note.style.display='none'; }
+
+  document.getElementById('srs-reduced-sub').textContent=earned>0?'after earnings-test reduction':'no earned income entered';
+
+  // SS claiming comparison table
+  const rows=[
+    {age:62,mo:ss62,label:'Age 62 (reduced)'},
+    {age:67,mo:ss67,label:'Age 67 (FRA)'},
+    {age:70,mo:ss70,label:'Age 70 (max)'}
+  ];
+  const lifeExp=85;
+  let html='<div class="cmp-row hd" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr"><div>Claiming age</div><div class="num">Monthly</div><div class="num">Annual</div><div class="num">Years paid (to 85)</div><div class="num">Total to 85</div></div>';
+  rows.forEach(r=>{
+    const yp=Math.max(0,lifeExp-r.age);
+    html+=`<div class="cmp-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr"><div>${r.label}</div><div class="num">${usd(r.mo)}</div><div class="num">${usd(r.mo*12)}</div><div class="num">${yp}</div><div class="num">${usd(r.mo*12*yp)}</div></div>`;
+  });
+  document.getElementById('ss-cmp-bar').innerHTML=html;
+
+  // Chart — cumulative SS income by age
+  const ages=[];
+  for(let a=60;a<=90;a++) ages.push(a);
+  const cum62=ages.map(a=>a<62?0:r0(ss62*12*(a-62)));
+  const cum67=ages.map(a=>a<67?0:r0(ss67*12*(a-67)));
+  const cum70=ages.map(a=>a<70?0:r0(ss70*12*(a-70)));
+  svgLineChart('ssChart',
+    [
+      {data:cum62,color:'#b23a1e'},
+      {data:cum67,color:'#185fa5',dash:'5,4'},
+      {data:cum70,color:'#0f6e56',dash:'2,3'}
+    ],
+    ages.map(String),
+    {height:260,yFmt:v=>'$'+Math.round(v/1000)+'K',maxXTicks:7}
+  );
+}
+
+/* ═══════════════════════════════════════════
+   PAGE 5 · TOTAL PICTURE
+═══════════════════════════════════════════ */
+const STATE_TAX={
+  DE: (inc,pension)=>{
+    const excl=2000; // under 60; 12500 at 60+
+    const br=[[0,0],[2000,0.022],[5000,0.039],[10000,0.048],[20000,0.052],[25000,0.0555],[60000,0.066]];
+    const taxable=Math.max(0,inc-excl-6500);
+    let t=0;
+    for(let i=0;i<br.length;i++){
+      const lo=br[i][0],hi=i+1<br.length?br[i+1][0]:Infinity;
+      if(taxable>lo) t+=(Math.min(taxable,hi)-lo)*br[i][1]; else break;
+    }
+    return r0(t);
+  },
+  PA: (inc)=>{
+    // PA flat 3.07%; pension from state/federal gov generally exempt
+    return r0(Math.max(0,inc)*0.0307);
+  },
+  MD: (inc)=>{
+    const br=[[0,0.02],[1000,0.03],[2000,0.04],[3000,0.0475],[100000,0.05],[125000,0.0525],[150000,0.055],[250000,0.0575]];
+    let t=0;
+    for(let i=0;i<br.length;i++){
+      const lo=br[i][0],hi=i+1<br.length?br[i+1][0]:Infinity;
+      if(inc>lo) t+=(Math.min(inc,hi)-lo)*br[i][1]; else break;
+    }
+    return r0(t);
+  },
+  VA: (inc)=>{
+    const br=[[0,0.02],[3000,0.03],[5000,0.05],[17000,0.0575]];
+    let t=0;
+    for(let i=0;i<br.length;i++){
+      const lo=br[i][0],hi=i+1<br.length?br[i+1][0]:Infinity;
+      if(inc>lo) t+=(Math.min(inc,hi)-lo)*br[i][1]; else break;
+    }
+    return r0(t);
+  },
+  none: ()=>0
+};
+
+const FEDBR=[[0,0.10],[23850,0.12],[96950,0.22],[206700,0.24],[394600,0.32],[501050,0.35],[751600,0.37]];
+function fedTax(inc){let t=0;for(let i=0;i<FEDBR.length;i++){const lo=FEDBR[i][0],hi=i+1<FEDBR.length?FEDBR[i+1][0]:Infinity;if(inc>lo)t+=(Math.min(inc,hi)-lo)*FEDBR[i][1];else break;}return r0(t);}
+function margFed(base,add){return r0(Math.max(0,fedTax(Math.max(0,base+add-31500))-fedTax(Math.max(0,base-31500))));}
+
+function renderPicture(){
+  const survRate=+document.getElementById('pic-surv').value||0;
+  const fehbMo=+document.getElementById('pic-fehb').value||0;
+  const other=+document.getElementById('pic-other').value||0;
+  const stateKey=document.getElementById('pic-state').value;
+  const btn=document.querySelector('#ssclaim-seg button.on');
+  const ssAge=btn?+btn.dataset.age:62;
+
+  // Pull from other tabs
+  if(!lastPayResult) renderPay();
+  const ffBase=lastPayResult?lastPayResult.ffBase:0;
+  const yrs=+document.getElementById('h3-yrs').value||23;
+  const fMult=Math.min(yrs,20)*0.017+Math.max(yrs-20,0)*0.01;
+  // Use high-3 if available else use ffBase
+  const h3inp=document.getElementById('h3y-0');
+  const high3Val=h3inp&&+h3inp.value>0?(() => {
+    const vals=[]; for(let i=0;i<h3Years.length;i++){const el=document.getElementById('h3y-'+i);vals.push(el?+el.value||0:0);}
+    let best=0; for(let i=0;i<=vals.length-3;i++){const a=(vals[i]+vals[i+1]+vals[i+2])/3;if(a>best)best=a;} return r0(best);
+  })():r0(ffBase);
+
+  const grossAnn=r0(high3Val*fMult);
+  const reducedAnn=r0(grossAnn*(1-survRate));
+  const srsYrAmt=r0((+document.getElementById('ss-mo62').value||0)*((+document.getElementById('ss-fers-yrs').value||23)/40)*12);
+  const ssMoMap={62:+document.getElementById('ss-mo62').value||0, 67:+document.getElementById('ss-mo67').value||0, 70:+document.getElementById('ss-mo70').value||0};
+  const ssYr=r0(ssMoMap[ssAge]*12);
+  const tspBal=+document.getElementById('tsp-bal').value||0;
+  const tspYrs=+document.getElementById('tsp-yrs').value||10;
+  const tspRet=parseFloat(document.getElementById('tsp-ret-range').value)/100;
+  const tspContrib=+document.getElementById('tsp-contrib').value||0;
+  const tspMatch=+document.getElementById('tsp-match').value||0;
+  let tspFinal=tspBal;
+  for(let i=0;i<tspYrs;i++) tspFinal=tspFinal*(1+tspRet)+(tspContrib+tspMatch);
+  const tspWdRate=parseFloat(document.getElementById('tsp-wd-range').value)/100;
+  const tspMoWd=r0(tspFinal*tspWdRate/12);
+  const fehbYr=fehbMo*12;
+
+  // Pre-62: annuity + SRS + TSP - taxes - FEHB
+  const pre62GrossYr=reducedAnn+srsYrAmt+tspMoWd*12;
+  const pre62FedTax=margFed(other,reducedAnn+srsYrAmt+tspMoWd*12);
+  const pre62StateTax=STATE_TAX[stateKey]?(STATE_TAX[stateKey](reducedAnn+srsYrAmt+tspMoWd*12,reducedAnn)):0;
+  const pre62Net=pre62GrossYr-pre62FedTax-pre62StateTax-fehbYr;
+
+  // Post-62: annuity + SS + TSP - taxes - FEHB
+  const post62GrossYr=reducedAnn+ssYr+tspMoWd*12;
+  const post62FedTax=margFed(other,reducedAnn+ssYr+tspMoWd*12);
+  const post62StateTax=STATE_TAX[stateKey]?(STATE_TAX[stateKey](reducedAnn+ssYr+tspMoWd*12,reducedAnn)):0;
+  const post62Net=post62GrossYr-post62FedTax-post62StateTax-fehbYr;
+
+  function buildStack(containerId,rowsId,netId,colors,items,net){
+    const total=items.reduce((s,i)=>s+Math.max(0,i.val),0)||1;
+    const bar=document.getElementById(containerId);
+    bar.innerHTML=items.map(it=>{
+      const w=Math.max(1,(it.val/total*100)).toFixed(1);
+      return `<div class="stack-seg" style="width:${w}%;background:${it.color}" title="${it.label}">${it.val>5000?usd(it.val/12)+'/mo':''}</div>`;
+    }).join('');
+    const rows=document.getElementById(rowsId);
+    rows.innerHTML=items.map(it=>`<div class="income-row">
+      <div class="income-dot" style="background:${it.color}"></div>
+      <div class="income-label">${it.label}</div>
+      <div class="income-val" style="color:${it.color}">${usd(it.val)}/yr</div>
+    </div>`).join('')+
+    `<div class="income-row"><div class="income-dot" style="background:#a32d2d"></div><div class="income-label">Federal &amp; state tax</div><div class="income-val" style="color:#a32d2d">−${usd(items.find(i=>i.k==='tax')?0:0)}</div></div>`;
+
+    // Rerender
+    const allItems=[
+      ...items,
+      {label:'Federal + state tax',val:-(items[0]?post62FedTax+post62StateTax:pre62FedTax+pre62StateTax),color:'#a32d2d',k:'tax'},
+      {label:'FEHB premium',val:-fehbYr,color:'#78716c',k:'fehb'}
+    ];
+    rows.innerHTML=allItems.map(it=>`<div class="income-row">
+      <div class="income-dot" style="background:${it.color};${it.val<0?'opacity:0.6':''}"></div>
+      <div class="income-label">${it.label}</div>
+      <div class="income-val" style="color:${it.color}">${it.val>=0?'':'−'}${usd(Math.abs(it.val))}/yr</div>
+    </div>`).join('');
+    document.getElementById(netId).innerHTML=`<span>Net monthly income</span><span style="font-family:ui-monospace,monospace;color:var(--teal)">${usd(net/12)}/mo</span>`;
+  }
+
+  buildStack('pre62-stack','pre62-rows','pre62-net',
+    ['#b23a1e','#ea580c','#185fa5'],
+    [{label:'FERS annuity (reduced '+Math.round(survRate*100)+'%)',val:reducedAnn,color:'#b23a1e'},
+     {label:'Special Retirement Supplement',val:srsYrAmt,color:'#ea580c'},
+     {label:'TSP withdrawal',val:tspMoWd*12,color:'#185fa5'}],
+    pre62Net
+  );
+
+  buildStack('post62-stack','post62-rows','post62-net',
+    ['#b23a1e','#0f6e56','#185fa5'],
+    [{label:'FERS annuity (reduced '+Math.round(survRate*100)+'%)',val:reducedAnn,color:'#b23a1e'},
+     {label:'Social Security (age '+ssAge+')',val:ssYr,color:'#0f6e56'},
+     {label:'TSP withdrawal',val:tspMoWd*12,color:'#185fa5'}],
+    post62Net
+  );
+
+  // Survivor block
+  const survAnn=r0(grossAnn*survRate);
+  document.getElementById('surv-block').innerHTML=
+    survRate===0
+      ? '<div class="callout" style="color:#a32d2d;border-left-color:#a32d2d;background:#fcebeb"><b>No survivor benefit elected.</b> Your spouse will not receive any continuation of your FERS annuity after your death. Just as important: <b>your spouse cannot retain FEHB health coverage after your death</b> — without a survivor annuity in place, their FEHB enrollment ends, even if they were covered as your dependent throughout your marriage. This is one of the most consequential and hardest-to-reverse choices on your retirement paperwork — confirm it reflects your intent before signing.</div>'
+      : `<div class="callout teal"><b>${survRate===0.1?'Full 50%':'Partial 25%'} survivor benefit elected.</b> Your annuity is reduced by ${Math.round(survRate*100)}% (${usd(grossAnn*survRate)}/yr). If you predecease your spouse, they will receive ${usd(survAnn)}/yr (${usd(survAnn/12)}/mo) for life, and — because a survivor annuity is in place — they can continue FEHB coverage after your death.</div>`;
+
+  // Detail table
+  const cols=[
+    {label:'Pre-62 (+ SRS)',gross:reducedAnn+srsYrAmt+tspMoWd*12,fed:pre62FedTax,state:pre62StateTax,net:pre62Net},
+    {label:'Post-62 (+ SS age '+ssAge+')',gross:reducedAnn+ssYr+tspMoWd*12,fed:post62FedTax,state:post62StateTax,net:post62Net}
+  ];
+  const nc=cols.length+1;
+  const gcols=`1.4fr ${cols.map(()=>'1fr').join(' ')}`;
+  let html=`<div class="cmp-row hd" style="grid-template-columns:${gcols}"><div>Item</div>${cols.map(c=>`<div class="num">${c.label}</div>`).join('')}</div>`;
+  const rowD=(lab,...vals)=>`<div class="cmp-row" style="grid-template-columns:${gcols}"><div>${lab}</div>${vals.map(v=>`<div class="num">${v}</div>`).join('')}</div>`;
+  html+=rowD('Gross income (annuity + income)',...cols.map(c=>usd(c.gross)));
+  html+=rowD('Survivor reduction ('+Math.round(survRate*100)+'%)',...cols.map(()=>survRate?'−'+usd(grossAnn*survRate):'—'));
+  html+=rowD('FEHB premium',...cols.map(()=>'−'+usd(fehbYr)));
+  html+=rowD('Est. federal tax',...cols.map(c=>'−'+usd(c.fed)));
+  html+=rowD('Est. '+stateKey+' state tax',...cols.map(c=>'−'+usd(c.state)));
+  html+=`<div class="cmp-row" style="grid-template-columns:${gcols};font-weight:700;color:#0f6e56"><div>Net income / yr</div>${cols.map(c=>`<div class="num">${usd(c.net)}</div>`).join('')}</div>`;
+  html+=`<div class="cmp-row" style="grid-template-columns:${gcols}"><div>Net income / mo</div>${cols.map(c=>`<div class="num">${usd(c.net/12)}</div>`).join('')}</div>`;
+  document.getElementById('net-detail-bar').innerHTML=html;
+}
+
+// SS claim segment
+document.getElementById('ssclaim-seg').querySelectorAll('button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#ssclaim-seg button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); renderPicture();
+  });
+});
+
+/* ═══════════════════════════════════════════
+   WIRE ALL INPUTS → RENDER
+═══════════════════════════════════════════ */
+function renderAll(){
+  renderPay();
+  renderH3();
+  renderTSP();
+  renderSS();
+  renderPicture();
+}
+
+['locA','gradeA','stepA','diffHrs','diffPct','otThresh'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){ el.addEventListener('input',renderAll); el.addEventListener('change',renderAll); }
+});
+['tsp-bal','tsp-yrs','tsp-contrib','tsp-match','tsp-wdyrs',
+ 'ss-mo62','ss-mo67','ss-mo70','ss-fers-yrs','ss-ret-age','ss-earned',
+ 'pic-fehb','pic-other','h3-yrs'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){ el.addEventListener('input',renderAll); el.addEventListener('change',renderAll); }
+});
+document.getElementById('tsp-match').addEventListener('input',()=>{ tspMatchManual=true; });
+['pic-surv','pic-state'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){ el.addEventListener('change',renderAll); }
+});
+
+renderAll();
+</script>
+</body>
+</html>
